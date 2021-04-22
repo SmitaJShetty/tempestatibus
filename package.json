@@ -5,16 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "jest ",
-    "tsc":"tsc",
+    "tsc": "tsc",
     "start:dev": "export NODE_ENV=local && tsc node dist/index.js",
-    "start":"tsc dist/index.js"
+    "start": "tsc dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "fastify": "^3.15.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "typescript": "^4.2.4"
   },
   "devDependencies": {
     "@types/node": "^14.14.41",
