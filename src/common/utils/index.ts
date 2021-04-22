@@ -1,10 +1,13 @@
 import {logger} from './logger';  
 import {getConfig} from '../config/config';
+import {WeekDays, WeekEnds} from './constants';
 import {getUpstreamAPIUrlByLocation, getUpstreamAPIUrlByLocationAndDay, getUpstreamAPIUrlByLocationAndToday} from './upstreamUrls';
 export {
     logger,
     getConfig,
     getUpstreamAPIUrlByLocation,
     getUpstreamAPIUrlByLocationAndDay,
-    getUpstreamAPIUrlByLocationAndToday
+    getUpstreamAPIUrlByLocationAndToday,
+    WeekEnds,
+    WeekDays
 }   

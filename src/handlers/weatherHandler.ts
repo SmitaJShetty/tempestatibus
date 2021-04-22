@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {getUpstreamAPIUrlByLocation,
     getUpstreamAPIUrlByLocationAndDay,
-    getUpstreamAPIUrlByLocationAndToday} from 'util';
+    getUpstreamAPIUrlByLocationAndToday, WeekEnds, WeekDays} from '../common/utils';
 import * as _ from 'lodash';
 import { logger } from '../common/utils';
 
@@ -21,12 +21,26 @@ const getWeatherByLocationAndDay= (location:string, weekday:string)=>{
         return;
     }
 
-    if (_.IsNil(weekday)||(!DaysOfWeek.contains(weekday))){
+    if (_.IsNil(weekday)||(!WeekDays.contains(weekday.toLowerCase()))){
         logger.Errorf(`getWeatherByLocation: invalid weekday`);
         return;
     }
+
+    const url = getUpstreamAPIUrlByLocationAndDay(location, weekday);
+    try{
+
+    }
+    catch(err){
+
+    }
+
 }
 
-const getWeatherByLocationToday = (location:string)=>{
-     
+const getWeatherByLocationToday = (today:string)=>{
+    if (_.IsNil(today)){
+        logger.Errorf(`getWeatherByLocation: invalid day`);
+        return;
+    }
+
+    const url=getUpstreamAPIUrlByLocationAndToday()
 }
