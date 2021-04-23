@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "commonjs",
+        "outDir": "dist",
+        "rootDir": "src",
+        "removeComments": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "baseUrl": "./",
+        "paths": {
+            "*": ["node_modules/*","src/types/*"]
+        },
+        "esModuleInterop": true,
+        "inlineSourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata":true,
+        "skipLibCheck":true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "traceResolution": false,
+        "listEmittedFiles":false,
+        "listFiles":false,
+        "pretty":true
+    },
+    "include": ["src","src/__test__"],
+    "compileOnSave": true,
+    "exclude": ["test/**/*.ts","__mocks__","src/**/*.spec.ts,","src/__test__","node_modules"]
+}

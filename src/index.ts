@@ -1,18 +1,29 @@
 
 import fastify from 'fastify';
-import logger from 'utils';
+import {logger} from './common/utils';
+import { preValidation } from './hooks/preValidationHook';
+import {weatherByLocationOpts,weatherByLocationAndWeekdayOpts,weatherByLocationTodayOpts} from './routes';
+import * as healthcheck from 'fastify-healthcheck';
 
-const start = () =>{
+const start = async() =>{
 
-    const serverAddr=process.env['serverAddress']
-    const serverPort=process.env['serverPort']
+    const serverAddr=process.env['serverAddress']||"0.0.0.0";
+    const serverPort=process.env['serverPort']||"3000";
 
-    console.log(`start of app`)
-    const server = fastify({logger})
-
-    try{}
+    try{
+        const server = fastify({logger})
+        server.register(weatherByLocationOpts)
+        server.register(weatherByLocationTodayOpts)
+        server.register(weatherByLocationAndWeekdayOpts)
+        server.register(healthcheck.default,{
+            healthcheckUrl:'/monitor/healthcheck',
+        });
+        server.addHook('preValidation',preValidation)
+        await server.listen(serverPort, serverAddr)
+        logger.info(`server listening on address:port: ${serverAddr}:${serverPort}`)
+    }
     catch(err){
-        logger.fatal(`server listening on address:port: ${serverAddr}:${serverPort}`)
+        logger.fatal(`error occurred: ${err}`)
     }
 }
 

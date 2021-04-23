@@ -1,4 +1,3 @@
-import {getConfig} from '../config/config';
 
 export const getUpstreamAPIUrlByLocation =(location:string) => `/weather/${location}`
 

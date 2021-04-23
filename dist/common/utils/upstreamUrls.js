@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getUpstreamAPIUrlByLocationAndToday = exports.getUpstreamAPIUrlByLocationAndDay = exports.getUpstreamAPIUrlByLocation = void 0;
+const getUpstreamAPIUrlByLocation = (location) => `/weather/${location}`;
+exports.getUpstreamAPIUrlByLocation = getUpstreamAPIUrlByLocation;
+const getUpstreamAPIUrlByLocationAndDay = (location, weekday) => `/weather/${location}/:${weekday}`;
+exports.getUpstreamAPIUrlByLocationAndDay = getUpstreamAPIUrlByLocationAndDay;
+const getUpstreamAPIUrlByLocationAndToday = (location) => `/weather/${location}/today`;
+exports.getUpstreamAPIUrlByLocationAndToday = getUpstreamAPIUrlByLocationAndToday;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXBzdHJlYW1VcmxzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL2NvbW1vbi91dGlscy91cHN0cmVhbVVybHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQ08sTUFBTSwyQkFBMkIsR0FBRSxDQUFDLFFBQWUsRUFBRSxFQUFFLENBQUMsWUFBWSxRQUFRLEVBQUUsQ0FBQTtBQUF4RSxRQUFBLDJCQUEyQiwrQkFBNkM7QUFFOUUsTUFBTSxpQ0FBaUMsR0FBRSxDQUFDLFFBQWUsRUFBRSxPQUFjLEVBQUUsRUFBRSxDQUFDLFlBQVksUUFBUSxLQUFLLE9BQU8sRUFBRSxDQUFBO0FBQTFHLFFBQUEsaUNBQWlDLHFDQUF5RTtBQUVoSCxNQUFNLG1DQUFtQyxHQUFFLENBQUMsUUFBZSxFQUFFLEVBQUUsQ0FBQyxZQUFZLFFBQVEsUUFBUSxDQUFBO0FBQXRGLFFBQUEsbUNBQW1DLHVDQUFtRCJ9
