@@ -9,3 +9,5 @@ makefile
 .DS_Store
 
 coverage
+
+dist
