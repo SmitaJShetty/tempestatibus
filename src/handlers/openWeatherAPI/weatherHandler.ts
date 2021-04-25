@@ -1,10 +1,10 @@
 import axios from 'axios'
 import {getUpstreamAPIUrlByLocation,
-    getUpstreamAPIUrlByLocationAndToday, WeekDays, getConfig, logger, } from '../../common/utils';
+     WeekDays, getConfig, logger, } from '../../common/utils';
 import * as _ from 'lodash';
 import {httpCodes} from '../../common/utils';
-import querystring from 'querystring';
 import {getCacheWeatherForecastByLocationAndDate} from '../../cache'
+import moment from 'moment-timezone';
 
 export const getLocationFromReq=(req:any) =>{
     const location=_.get(req,'params.location')
@@ -73,9 +73,17 @@ export const getWeatherByLocationAndWeekday = async(req:any, resp:any):Promise<a
         return;
     }
 
-    const locationForeCast = getCacheWeatherForecastByLocationAndDate(location,weekday);
-    console.log(locationForeCast)
-    return locationForeCast;
+    try{
+        const locationForeCast = await getCacheWeatherForecastByLocationAndDate(location,weekday);
+        console.log(locationForeCast)
+        return Promise.resolve(locationForeCast);
+    }
+    catch(err){
+        logger.error(`getWeatherByLocationAndWeekdayerror occurred while fetching forecast data for today for location ${location}`);
+        return Promise.reject()
+    }
+    
+    
 }
 
 export const getWeatherByLocationToday = async(req:any, resp:any):Promise<any>=>{
@@ -87,23 +95,15 @@ export const getWeatherByLocationToday = async(req:any, resp:any):Promise<any>=>
         return resp.send({msg:'invalid location'})
     }
 
-    const url = getUpstreamAPIUrlByLocationAndToday();
-    const apikey=getConfig('weatherAPIKey');
-    const opts = {
-        url,
-        baseUrl:getConfig('upstreamBaseUrl'),
-        querystring:querystring.stringify({
-            appid:apikey,
-            q: location
-        }), 
-    }
+    const weekday=moment().format('dddd').toLowerCase();
     let response;
     try{
-        response = await axios.get(opts.baseUrl,opts);
-        resp.code(response.status)
-        resp.send(response.data)
+        response = await getCacheWeatherForecastByLocationAndDate(location,weekday)
+        resp.code(httpCodes.OK)
+        resp.send(response)
     }
     catch(err){
+        logger.error(`error occurred: ${err}`)
         return Promise.reject(err)
     }
 }
