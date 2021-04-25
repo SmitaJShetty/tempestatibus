@@ -7,3 +7,5 @@ node_modules
 makefile
 
 .DS_Store
+
+coverage
