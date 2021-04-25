@@ -1,10 +1,9 @@
-import axios from 'axios'
-import {getUpstreamAPIUrlByLocation,
-     WeekDays, getConfig, logger, } from '../../common/utils';
+import {WeekDays, logger, } from '../common/utils';
 import * as _ from 'lodash';
-import {httpCodes} from '../../common/utils';
-import {getCacheWeatherForecastByLocationAndDate} from '../../cache'
-import moment from 'moment-timezone';
+import {httpCodes} from '../common/utils';
+import {getWeatherByLocationTodayService, 
+    getWeatherByLocationService,
+    getWeatherByLocationAndWeekdayService} from '../weatherService';
 
 export const getLocationFromReq=(req:any) =>{
     const location=_.get(req,'params.location')
@@ -32,18 +31,8 @@ export const getWeatherByLocation =async(req:any, resp:any):Promise<any> =>{
         return resp.send({msg:'empty location'})
     }
 
-    const apikey=getConfig('weatherAPIKey');
-    const opts={
-        url:getUpstreamAPIUrlByLocation(location),
-        baseURL: getConfig('upstreamBaseUrl'),
-        params:{
-            appid:apikey,
-            q: location
-        }
-    }
-
     try{
-       const response =await axios.get(opts.url, opts)
+       const response =await getWeatherByLocationService(location);
        resp.status(response.status)
        resp.send(response.data)
     }catch(err){
@@ -70,16 +59,17 @@ export const getWeatherByLocationAndWeekday = async(req:any, resp:any):Promise<a
         logger.error(`getWeatherByLocationAndWeekday: invalid weekday`);
         resp.code(httpCodes.BadRequest)
         return resp.send({msg:'invalid weekday value'})
-        return;
     }
 
     try{
-        const locationForeCast = await getCacheWeatherForecastByLocationAndDate(location,weekday);
-        return Promise.resolve(locationForeCast);
+        const locationForeCast = await getWeatherByLocationAndWeekdayService(location, weekday);
+        resp.code(httpCodes.OK)
+        resp.send(locationForeCast);
     }
     catch(err){
         logger.error(`getWeatherByLocationAndWeekdayerror occurred while fetching forecast data for today for location ${location}`);
-        return Promise.reject()
+        resp.code(httpCodes.InternalServerError);
+        resp.send(Promise.reject(err))
     }
 }
 
@@ -92,15 +82,15 @@ export const getWeatherByLocationToday = async(req:any, resp:any):Promise<any>=>
         return resp.send({msg:'invalid location'})
     }
 
-    const weekday=moment().format('dddd').toLowerCase();
     let response;
     try{
-        response = await getCacheWeatherForecastByLocationAndDate(location,weekday)
+        response = await getWeatherByLocationTodayService(location)
         resp.code(httpCodes.OK)
         resp.send(response)
     }
     catch(err){
         logger.error(`error occurred: ${err}`)
-        return Promise.reject(err)
+        resp.code(httpCodes.InternalServerError)
+        resp.send(Promise.reject(err))
     }
 }

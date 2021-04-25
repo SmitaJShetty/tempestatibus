@@ -1,4 +1,4 @@
-import {getWeatherByLocationToday, getWeatherByLocationAndWeekday, getWeatherByLocation} from './openWeatherAPI'
+import {getWeatherByLocationToday, getWeatherByLocationAndWeekday, getWeatherByLocation} from './weatherHandler'
 
 export {
     getWeatherByLocationToday, 

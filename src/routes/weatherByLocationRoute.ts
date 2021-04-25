@@ -1,4 +1,4 @@
-import {getWeatherByLocation }from '../handlers/openWeatherAPI'
+import {getWeatherByLocation }from '../handlers'
 
 export const weatherByLocationOpts = async(fastify:any)=>{
     const headersJsonSchema = {
