@@ -3,4 +3,6 @@ describe(`weather app handlers should respond to requests and send right statusc
     test(`getWeatherByLocation should return response for a successful api request`,()=>{
         
     })
+
+  
 })

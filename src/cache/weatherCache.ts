@@ -12,7 +12,7 @@ export const checkIfDayOldData = (locationWeather:DailyForecastResultValue):bool
        return true; //stale data, fetch for today
    }
 
-   if (moment().diff(moment(locationWeather.fetchDate),'days')>0){
+   if (moment().diff(moment(locationWeather.fetchDate),'days')!==0){
        return true
    }
 
@@ -21,18 +21,16 @@ export const checkIfDayOldData = (locationWeather:DailyForecastResultValue):bool
 
 //get location 
 export const getLocationForecastForWeekday = (weekday:string, locationWeather:DailyForecastResultValue):Promise<DailyForecastResultValue>|any=>{
-    const forecastData=locationWeather.results;
+    const forecastData=locationWeather && locationWeather.results;
     if (_.isNil(forecastData)){
         logger.error(`getLocationWeatherForWeekday:forecast data was empty`)
         throw new Error(`forecast data not found`)
     }
 
     const dayForecast=forecastData.find(f =>{
-        console.log(moment.unix(f.dt).tz("Australia/Sydney").format('dddd'))
         return moment.unix(f.dt).tz("Australia/Sydney").format('dddd').toLowerCase()===weekday
     })
 
-    console.log(moment.unix(dayForecast.dt).format("YYYY-MM-DD HH:mm:ss"))
     return dayForecast;
 }
 
@@ -50,7 +48,6 @@ export const getCacheWeatherForecastByLocationAndDate = async(location:string,we
     let dailyForecastData;
     try{
         dailyForecastData = await getLocationWeatherForDays(lon,lat,WeekDaysLimit)
-        console.log(dailyForecastData)
     }
     catch(err){ 
         logger.error(`error: ${err} occurred while fetching location weather forcast for ${WeekDaysLimit} days`)
@@ -65,10 +62,9 @@ export const getCacheWeatherForecastByLocationAndDate = async(location:string,we
     return getLocationForecastForWeekday(weekday,{fetchDate: new Date(), results: dailyForecastData});
 }
 
-const getLocationWeatherForDays = async(lon:number, lat:number, weekdaysLimit:number):Promise<any> =>{
+export const getLocationWeatherForDays = async(lon:number, lat:number, weekdaysLimit:number):Promise<any> =>{
     //make a call to fetch geolocation coordinates
     const url = getUpstreamAPIUrlByLocationAndDay();
-    console.log(2)
     const apikey=getConfig('weatherAPIKey');
     const opts = {
         url,
@@ -81,18 +77,16 @@ const getLocationWeatherForDays = async(lon:number, lat:number, weekdaysLimit:nu
             exclude:"hourly,minutely,alerts,current"
         }, 
     }
-    console.log(opts);
     let response,forecastData;
-   
+  
     try{
-        response= await axios.get(opts.url, opts);
-        console.log(response)
+        response= await axios.get(opts.url, opts); 
         forecastData=response && response.data && response.data.daily;
-        console.log(forecastData)
     }
     catch(err){
-        logger.error(`getWeatherByLocationAndWeekday: error ${err} occurred from upstream service for arguments: ${location}`)
+        logger.error(`getWeatherByLocationAndWeekday: error ${err} occurred from upstream service for arguments: ${lon},${lat}`)
         return Promise.reject(err)
     }
+    console.log(forecastData)
     return forecastData;
 }

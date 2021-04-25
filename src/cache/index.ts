@@ -1,4 +1,4 @@
 import {getGeoCoordinates} from './geoCoordinatesCache';
-import {getCacheWeatherForecastByLocationAndDate} from './weatherCache';
+import {getCacheWeatherForecastByLocationAndDate, checkIfDayOldData,getLocationForecastForWeekday, getLocationWeatherForDays} from './weatherCache';
 
-export {getGeoCoordinates, getCacheWeatherForecastByLocationAndDate} 
+export {getGeoCoordinates, getCacheWeatherForecastByLocationAndDate,checkIfDayOldData,getLocationForecastForWeekday,getLocationWeatherForDays} 

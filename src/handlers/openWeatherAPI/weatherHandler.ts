@@ -75,15 +75,12 @@ export const getWeatherByLocationAndWeekday = async(req:any, resp:any):Promise<a
 
     try{
         const locationForeCast = await getCacheWeatherForecastByLocationAndDate(location,weekday);
-        console.log(locationForeCast)
         return Promise.resolve(locationForeCast);
     }
     catch(err){
         logger.error(`getWeatherByLocationAndWeekdayerror occurred while fetching forecast data for today for location ${location}`);
         return Promise.reject()
     }
-    
-    
 }
 
 export const getWeatherByLocationToday = async(req:any, resp:any):Promise<any>=>{

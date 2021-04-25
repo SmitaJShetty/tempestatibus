@@ -8,6 +8,6 @@ module.exports={
     },
     testMatch: ['<rootDir>/src/__test__/**/*.test.ts'],
     watchPathIgnorePatterns: ['<rootDir>/node_modules/','<rootDir>/proto/'],
-    testEnvironment: 'node',
+    testEnvironment:'node',
     setupFiles:['<rootDir>/src/__test__/.jest/setEnvVars.js']
 }   
