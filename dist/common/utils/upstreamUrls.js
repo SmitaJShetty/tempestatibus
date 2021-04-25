@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUpstreamAPIUrlByLocationAndToday = exports.getUpstreamAPIUrlByLocationAndDay = exports.getUpstreamAPIUrlByLocation = void 0;
-const getUpstreamAPIUrlByLocation = (location) => `/weather/${location}`;
+const getUpstreamAPIUrlByLocation = (location) => `/weather?q=${location}`;
 exports.getUpstreamAPIUrlByLocation = getUpstreamAPIUrlByLocation;
-const getUpstreamAPIUrlByLocationAndDay = (location, weekday) => `/weather/${location}/:${weekday}`;
+const getUpstreamAPIUrlByLocationAndDay = () => `/onecall`;
 exports.getUpstreamAPIUrlByLocationAndDay = getUpstreamAPIUrlByLocationAndDay;
-const getUpstreamAPIUrlByLocationAndToday = (location) => `/weather/${location}/today`;
+const getUpstreamAPIUrlByLocationAndToday = () => `/weather`;
 exports.getUpstreamAPIUrlByLocationAndToday = getUpstreamAPIUrlByLocationAndToday;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXBzdHJlYW1VcmxzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL2NvbW1vbi91dGlscy91cHN0cmVhbVVybHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQ08sTUFBTSwyQkFBMkIsR0FBRSxDQUFDLFFBQWUsRUFBRSxFQUFFLENBQUMsWUFBWSxRQUFRLEVBQUUsQ0FBQTtBQUF4RSxRQUFBLDJCQUEyQiwrQkFBNkM7QUFFOUUsTUFBTSxpQ0FBaUMsR0FBRSxDQUFDLFFBQWUsRUFBRSxPQUFjLEVBQUUsRUFBRSxDQUFDLFlBQVksUUFBUSxLQUFLLE9BQU8sRUFBRSxDQUFBO0FBQTFHLFFBQUEsaUNBQWlDLHFDQUF5RTtBQUVoSCxNQUFNLG1DQUFtQyxHQUFFLENBQUMsUUFBZSxFQUFFLEVBQUUsQ0FBQyxZQUFZLFFBQVEsUUFBUSxDQUFBO0FBQXRGLFFBQUEsbUNBQW1DLHVDQUFtRCJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXBzdHJlYW1VcmxzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vc3JjL2NvbW1vbi91dGlscy91cHN0cmVhbVVybHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQ08sTUFBTSwyQkFBMkIsR0FBRSxDQUFDLFFBQWUsRUFBRSxFQUFFLENBQUMsY0FBYyxRQUFRLEVBQUUsQ0FBQTtBQUExRSxRQUFBLDJCQUEyQiwrQkFBK0M7QUFFaEYsTUFBTSxpQ0FBaUMsR0FBRSxHQUFHLEVBQUUsQ0FBQyxVQUFVLENBQUE7QUFBbkQsUUFBQSxpQ0FBaUMscUNBQWtCO0FBRXpELE1BQU0sbUNBQW1DLEdBQUUsR0FBRyxFQUFFLENBQUMsVUFBVSxDQUFBO0FBQXJELFFBQUEsbUNBQW1DLHVDQUFrQiJ9

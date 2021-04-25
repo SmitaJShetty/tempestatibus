@@ -1,6 +1,6 @@
 
-export const getUpstreamAPIUrlByLocation =(location:string) => `/weather/${location}`
+export const getUpstreamAPIUrlByLocation =(location:string) => `/weather?q=${location}`
 
-export const getUpstreamAPIUrlByLocationAndDay =(location:string, weekday:string) => `/weather/${location}/:${weekday}`
+export const getUpstreamAPIUrlByLocationAndDay =() => `/onecall`
 
-export const getUpstreamAPIUrlByLocationAndToday =(location:string) => `/weather/${location}/today`
+export const getUpstreamAPIUrlByLocationAndToday =() => `/weather`

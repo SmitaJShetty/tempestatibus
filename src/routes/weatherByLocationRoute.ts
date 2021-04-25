@@ -9,12 +9,12 @@ export const weatherByLocationOpts = async(fastify:any)=>{
         },
         required: ['apiKey','apiSecret'],
     };
-    const queryStringJSONSchema = {
+    const paramsJSONSchema = {
         location: {type:'string'},
     }
     const schema={
-        headers:headersJsonSchema,
-        querystring: queryStringJSONSchema
+        headers:headersJsonSchema,  
+        params: paramsJSONSchema
     };
 
     fastify.get('/tempestatibus/v1/:location',{schema},getWeatherByLocation)

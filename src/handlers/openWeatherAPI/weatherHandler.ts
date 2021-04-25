@@ -1,11 +1,13 @@
 import axios from 'axios'
 import {getUpstreamAPIUrlByLocation,
-    getUpstreamAPIUrlByLocationAndDay,
     getUpstreamAPIUrlByLocationAndToday, WeekDays, getConfig, logger, } from '../../common/utils';
 import * as _ from 'lodash';
+import {httpCodes} from '../../common/utils';
+import querystring from 'querystring';
+import {getCacheWeatherForecastByLocationAndDate} from '../../cache'
 
 export const getLocationFromReq=(req:any) =>{
-    const location=_.get(req,'querystring.location')
+    const location=_.get(req,'params.location')
     if (_.isNil(location)){
         logger.error(`request did not contain location parameter`)
         return 
@@ -14,7 +16,7 @@ export const getLocationFromReq=(req:any) =>{
 }
 
 export const getWeekdayFromReq=(req:any) =>{
-    const weekday=_.get(req,'querystring.weekday')
+    const weekday=_.get(req,'params.weekday')
     if (_.isNil(weekday)){
         logger.error(`request did not contain location parameter`)
         return 
@@ -25,85 +27,79 @@ export const getWeekdayFromReq=(req:any) =>{
 export const getWeatherByLocation =async(req:any, resp:any):Promise<any> =>{
     const location=getLocationFromReq(req)
     if (_.isNil(location)){
-        logger.Errorf(`getWeatherByLocation: invalid location`);
-        return;
+        logger.error(`getWeatherByLocation: invalid location`);
+        resp.code(httpCodes.BadRequest)
+        return resp.send({msg:'empty location'})
     }
 
     const apikey=getConfig('weatherAPIKey');
     const opts={
         url:getUpstreamAPIUrlByLocation(location),
-        baseUrl: getConfig('upstreamBaseUrl'),
+        baseURL: getConfig('upstreamBaseUrl'),
         params:{
-            apikey,
+            appid:apikey,
             q: location
-        },  
+        }
     }
 
     try{
        const response =await axios.get(opts.url, opts)
-       resp.code(response.status)
+       resp.status(response.status)
        resp.send(response.data)
     }catch(err){
-        return Promise.reject(err)
+        logger.error(`getWeatherByLocationAndWeekday: error occurred from upstream service for arguments: ${location}`)
+        throw Promise.reject(err)
     }
 }
 
 export const getWeatherByLocationAndWeekday = async(req:any, resp:any):Promise<any>=>{
     const location=getLocationFromReq(req)
     if (_.isNil(location)){
-        logger.Error(`getWeatherByLocationAndWeekday: received invalid location`)
+        logger.error(`getWeatherByLocationAndWeekday: received invalid location`)
+        resp.code(httpCodes.BadRequest)
+        return resp.send({msg:'empty location'})
     }
     const weekday=getWeekdayFromReq(req)
     if (_.isNil(weekday)){
-        logger.Errorf(`getWeatherByLocationAndWeekday: received invalid weekday`);
+        logger.error(`getWeatherByLocationAndWeekday: received invalid weekday`);
+        resp.code(httpCodes.BadRequest)
+        return resp.send({msg:'empty weekday'})
+    }
+
+    if (_.isNil(weekday)||(_.isNil(WeekDays.find(wd=> wd===weekday.toLowerCase())))){
+        logger.error(`getWeatherByLocationAndWeekday: invalid weekday`);
+        resp.code(httpCodes.BadRequest)
+        return resp.send({msg:'invalid weekday value'})
         return;
     }
 
-    if (_.isNil(weekday)||(!WeekDays.every(wd=> wd===weekday.toLowerCase()))){
-        logger.Errorf(`getWeatherByLocationAndWeekday: invalid weekday`);
-        return;
-    }
-
-    const url = getUpstreamAPIUrlByLocationAndDay(location, weekday);
-    const apikey=getConfig('weatherAPIKey');
-    const opts = {
-        url,
-        params:{
-            apikey,
-            url,
-            baseUrl:getConfig('upstreamBaseUrl'),
-        }
-    }
-    try{
-        const response = await axios.get(url, opts);
-        resp.code(response.status)
-        resp.send(response.data)
-    }
-    catch(err){
-        logger.Error(`getWeatherByLocationAndWeekday: error occurred from upstream service for arguments: ${location} and ${weekday}`)
-        Promise.reject(err)
-    }
+    const locationForeCast = getCacheWeatherForecastByLocationAndDate(location,weekday);
+    console.log(locationForeCast)
+    return locationForeCast;
 }
 
 export const getWeatherByLocationToday = async(req:any, resp:any):Promise<any>=>{
     const location = getLocationFromReq(req)
 
     if (_.isNil(location)){
-        logger.Errorf(`getWeatherByLocation: invalid day`);
-        return;
+        logger.error(`getWeatherByLocation: invalid day`);
+        resp.code(httpCodes.BadRequest)
+        return resp.send({msg:'invalid location'})
     }
 
-    const url = getUpstreamAPIUrlByLocationAndToday(location);
+    const url = getUpstreamAPIUrlByLocationAndToday();
     const apikey=getConfig('weatherAPIKey');
     const opts = {
-        params:{
-            apikey,
-            url,
-            baseUrl:getConfig('upstreamBaseUrl'),
-        }
+        url,
+        baseUrl:getConfig('upstreamBaseUrl'),
+        querystring:querystring.stringify({
+            appid:apikey,
+            q: location
+        }), 
     }
+    let response;
     try{
-        const response = await axios.get(url,opts);
+        response = await axios.get(opts.baseUrl,opts);
         resp.code(response.status)
         resp.send(response.data)
     }

@@ -9,11 +9,6 @@ export async function preValidation(req:any, resp:any) {
         });
     }
 
-    console.log(req.headers.apikey)
-    console.log(_.get(req,'headers.apisecret'))
-    console.log(getConfig('apisecret'))
-    console.log(getConfig('apikey'))
-
     if ((_.get(req,'headers.apikey')!==getConfig('apikey') || _.get(req, 'headers.apisecret')!==getConfig('apisecret')) && getConfig('nodeEnv')!=='local') {
         const error={
             status: httpCodes.UnAuthorized,

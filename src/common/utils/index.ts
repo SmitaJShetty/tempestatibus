@@ -1,6 +1,6 @@
 import {logger} from './logger';  
 import {getConfig} from '../config/config';
-import {WeekDays, WeekEnds} from './constants';
+import {WeekDays, WeekDaysLimit} from './constants';
 import {getUpstreamAPIUrlByLocation, getUpstreamAPIUrlByLocationAndDay, getUpstreamAPIUrlByLocationAndToday} from './upstreamUrls';
 import {httpCodes} from './httpCodes';
 
@@ -10,7 +10,7 @@ export {
     getUpstreamAPIUrlByLocation,
     getUpstreamAPIUrlByLocationAndDay,
     getUpstreamAPIUrlByLocationAndToday,
-    WeekEnds,
+    WeekDaysLimit,
     WeekDays,
     httpCodes
 }   

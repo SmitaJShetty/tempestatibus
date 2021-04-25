@@ -9,12 +9,12 @@ export const weatherByLocationTodayOpts = async(fastify:any)=>{
         },
         required: ['apiKey','apiSecret'],
     };
-    const queryStringJSONSchema = {
+    const paramsJSONSchema = {
         location: {type:'string'},
     }
     const schema={
         headers:headersJsonSchema,
-        querystring: queryStringJSONSchema
+        params: paramsJSONSchema
     };
     fastify.get('/tempestatibus/v1/:location/today',{schema},getWeatherByLocationToday)
 }

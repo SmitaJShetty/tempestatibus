@@ -9,13 +9,13 @@ export const weatherByLocationAndWeekdayOpts = async(fastify:any)=>{
         },
         required: ['apiKey','apiSecret'],
     };
-    const queryStringJSONSchema = {
+    const paramsJSONSchema = {
         location: {type:'string'},
         weekday: {type:'string'}
     }
     const schema={
         headers:headersJsonSchema,
-        querystring: queryStringJSONSchema
+        params: paramsJSONSchema
     };
     fastify.get('/tempestatibus/v1/:location/:weekday',{schema},getWeatherByLocationAndWeekday)
 }
