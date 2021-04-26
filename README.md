@@ -9,6 +9,14 @@ Application can be cloned locally and executed by using the `npm run build` and 
 
 You will need a .env file containing environment variables.
 
+```
+upstreamBaseUrl=http://api.openweathermap.org/data/2.5
+weatherAPIKey=<open api key here>
+serverAddr=0.0.0.0 
+serverPort=3000
+apikey=api
+apisecret=secret
+```
 
 *Notes*
 Application is written in typescript, javascript. Uses jest, nock, fastify-test for unit tests. No deployment files are coded at the moment. Also many more tests can be incorporated. Incorporation of mocks and handler invocations are incorporated in tests that are written. 
